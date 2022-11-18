@@ -8,17 +8,24 @@ def ball_animation():
     ball.x += ball_speed_x
     ball.y += ball_speed_y
 
+    if ball.bottom >= screen_height or ball.top <= 0:
+        pygame.mixer.Sound.play(pong_sound)
+        ball_speed_y *= -1
+
+    # Player Score
     if ball.left <= 0:
+        pygame.mixer.Sound.play(score_sound)
         player_score += 1
         score_time = pygame.time.get_ticks()
+
+    # Opponent Score
     if ball.right >= screen_width:
+        pygame.mixer.Sound.play(score_sound)
         opponent_score += 1
         score_time = pygame.time.get_ticks()
 
-    if ball.bottom >= screen_height or ball.top <= 0:
-        ball_speed_y *= -1
-
     if ball.colliderect(player) and ball_speed_x > 0:
+        pygame.mixer.Sound.play(pong_sound)
         if abs(ball.right - player.left) < 10:
             ball_speed_x *= -1
         elif abs(ball.bottom - player.top) < 10 and ball_speed_y > 0:
@@ -26,6 +33,7 @@ def ball_animation():
         elif abs(ball.top - player.bottom) < 10 and ball_speed_y > 0:
             ball_speed_y *= -1
     if ball.colliderect(opponent) and ball_speed_x < 0:
+        pygame.mixer.Sound.play(pong_sound)
         if abs(ball.left - opponent.right) < 10:
             ball_speed_x *= -1
         elif abs(ball.bottom - opponent.top) < 10 and ball_speed_y > 0:
@@ -83,6 +91,7 @@ def ball_restart():
 
 
 # General Setup
+pygame.mixer.pre_init(44100, -16, 2, 1024)
 pygame.init()
 clock = pygame.time.Clock()
 
@@ -115,6 +124,9 @@ game_font = pygame.font.SysFont("Noto Sans", 32)
 # Score Timer
 score_time = True
 
+# Sound
+pong_sound = pygame.mixer.Sound("pong.ogg")
+score_sound = pygame.mixer.Sound("score.ogg")
 
 while True:
     # Handling Input
