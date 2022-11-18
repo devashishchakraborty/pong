@@ -37,6 +37,11 @@ def opponent_ai():
 def ball_restart():
 	global ball_speed_x, ball_speed_y
 	ball.center = (screen_width/2,screen_height/2)
+
+	# Player and opponent restart
+	player.centery = screen_height/2
+	opponent.centery = screen_height/2
+
 	ball_speed_x *= random.choice((-1,1))
 	ball_speed_y *= random.choice((-1,1))
 
